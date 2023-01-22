@@ -1,15 +1,17 @@
 const { NotFound } = require("http-errors");
 const { schemas, Contact } = require("../../models/contact");
 
-const updateById = async (req, res, next) => {
+const updateStatusContact = async (req, res, next) => {
   try {
-    const { error } = schemas.addJoiSchema.validate(req.body);
+    const { error } = schemas.updateFavoriteSchema.validate(req.body);
     if (error) {
       res.status(400).json({ message: error.details[0].message });
       return;
     }
     const { contactId } = req.params;
-    const result = await Contact.findByIdAndUpdate(contactId, req.body, {new:true});
+    const result = await Contact.findByIdAndUpdate(contactId, req.body, {
+      new: true,
+    });
     if (!result) {
       throw new NotFound(`Contact with id=${contactId} not found`);
     }
@@ -19,4 +21,4 @@ const updateById = async (req, res, next) => {
   }
 };
 
-module.exports = updateById;
+module.exports = updateStatusContact;
