@@ -1,5 +1,5 @@
 const { NotFound } = require("http-errors");
-const { schemas, Contact } = require("../../models/contact");
+const { schemas, Contact } = require("../../models");
 
 const updateStatus = async (req, res, next) => {
   try {
