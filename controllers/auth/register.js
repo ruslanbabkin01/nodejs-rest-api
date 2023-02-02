@@ -8,13 +8,20 @@ const register = async (req, res, next) => {
       res.status(400).json({ message: error.details[0].message });
       return;
     }
-    const { email, password } = req.body;
+
+    const { email } = req.body;
     const user = await User.findOne({ email });
     if (user) {
       throw new Conflict("Email in use");
     }
-    const result = await User.create({ email, password });
-    res.status(201).json(result);
+
+    const newUser = await User.create(req.body);
+    res.status(201).json({
+      user: {
+        email,
+        subscription: newUser.subscription,
+      },
+    });
   } catch (error) {
     next(error);
   }
