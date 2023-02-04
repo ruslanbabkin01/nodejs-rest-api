@@ -1,17 +1,8 @@
-const { schemas, Contact } = require("../../models");
+const { Contact } = require("../../models");
 
-const add = async (req, res, next) => {
-  try {
-    const { error } = schemas.addJoiSchema.validate(req.body);
-    if (error) {
-      res.status(400).json({ message: error.details[0].message });
-      return;
-    }
-    const result = await Contact.create(req.body);
-    res.status(201).json(result);
-  } catch (error) {
-    next(error);
-  }
+const add = async (req, res) => {
+  const result = await Contact.create(req.body);
+  res.status(201).json(result);
 };
 
 module.exports = add;
