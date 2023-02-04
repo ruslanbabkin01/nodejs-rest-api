@@ -12,11 +12,12 @@ const login = async (req, res) => {
     throw new Unauthorized("Email or password is wrong");
   }
 
-  const { SECRET_KEY } = process.env;
   const payload = {
     id: user._id,
   };
-  const token = jwt.sign(payload, SECRET_KEY);
+  const token = jwt.sign(payload, process.env.SECRET_KEY);
+
+  await User.findByIdAndUpdate(user._id, { token });
 
   res.status(200).json({
     token,

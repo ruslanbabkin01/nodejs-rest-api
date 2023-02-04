@@ -3,7 +3,7 @@ const express = require("express");
 const { contacts: ctrl } = require("../../controllers");
 const {
   isValidId,
-  auth,
+  authMiddleware,
   validation,
   ctrlWrapper,
 } = require("../../middlewares");
@@ -11,11 +11,16 @@ const { schemas } = require("../../models");
 
 const router = express.Router();
 
-router.get("/", ctrlWrapper(ctrl.getAll));
+router.get("/", authMiddleware, ctrlWrapper(ctrl.getAll));
 
 router.get("/:contactId", isValidId, ctrlWrapper(ctrl.getById));
 
-router.post("/", validation(schemas.addJoiSchema), ctrlWrapper(ctrl.add));
+router.post(
+  "/",
+  authMiddleware,
+  validation(schemas.addJoiSchema),
+  ctrlWrapper(ctrl.add)
+);
 
 router.delete("/:contactId", isValidId, ctrlWrapper(ctrl.removeById));
 

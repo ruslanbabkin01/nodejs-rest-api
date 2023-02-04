@@ -1,5 +1,12 @@
-const { User, userSchemas } = require("../../models");
+const getCurrent = async (req, res) => {
+  const { subscription, email } = req.user;
 
-const getCurrent = async (req, res, next) => {};
+  res.json({
+    user: {
+      subscription,
+      email,
+    },
+  });
+};
 
 module.exports = getCurrent;

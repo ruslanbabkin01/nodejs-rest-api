@@ -1,7 +1,11 @@
 const express = require("express");
 
-const { auth: ctrl, users } = require("../../controllers");
-const { auth, validation, ctrlWrapper } = require("../../middlewares");
+const { auth: ctrl, users: ctrlUser } = require("../../controllers");
+const {
+  authMiddleware,
+  validation,
+  ctrlWrapper,
+} = require("../../middlewares");
 const { userSchemas } = require("../../models");
 
 const router = express.Router();
@@ -20,9 +24,9 @@ router.post(
 );
 // router.post("/signin")
 
-router.post("/logout", auth, ctrlWrapper(ctrl.logout));
+router.post("/logout", authMiddleware, ctrlWrapper(ctrl.logout));
 // router.get("/signout")
 
-router.get("/current", ctrlWrapper(users.getCurrent));
+router.get("/current", authMiddleware, ctrlWrapper(ctrlUser.getCurrent));
 
 module.exports = router;
