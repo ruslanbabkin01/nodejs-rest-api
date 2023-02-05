@@ -24,7 +24,7 @@ const userSchema = new Schema(
     },
     token: {
       type: String,
-      default: null
+      default: null,
     },
   },
   { versionKey: false, timestamps: true }
@@ -42,12 +42,17 @@ const loginJoiSchema = Joi.object({
   email: Joi.string().pattern(emailRegex).required(),
 });
 
+const updateSubJoiSchema = Joi.object({
+  subscription: Joi.string().valid("starter", "pro", "business").required(),
+});
+
+const User = model("user", userSchema);
+
 const userSchemas = {
   registerJoiSchema,
   loginJoiSchema,
+  updateSubJoiSchema,
 };
-
-const User = model("user", userSchema);
 
 module.exports = {
   userSchemas,
