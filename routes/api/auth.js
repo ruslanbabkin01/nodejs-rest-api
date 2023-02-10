@@ -5,6 +5,7 @@ const {
   authMiddleware,
   validation,
   ctrlWrapper,
+  upload,
 } = require("../../middlewares");
 const { userSchemas } = require("../../models");
 
@@ -34,6 +35,13 @@ router.patch(
   authMiddleware,
   validation(userSchemas.updateSubJoiSchema),
   ctrlWrapper(ctrlUser.updateSubscription)
+);
+
+router.patch(
+  "/avatars",
+  authMiddleware,
+  upload.single("avatar"),
+  ctrlWrapper(ctrlUser.updateAvatar)
 );
 
 module.exports = router;
