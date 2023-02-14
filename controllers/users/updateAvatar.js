@@ -1,6 +1,6 @@
 const { User } = require("../../models");
 const path = require("path");
-const resizeImage = require("../../helpers/resizeImage");
+const { resizeImage } = require("../../helpers");
 
 const avatarsDir = path.join(__dirname, "../../", "public", "avatars");
 

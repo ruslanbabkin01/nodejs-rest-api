@@ -22,7 +22,7 @@ const resendVerifyEmail = async (req, res) => {
   await sendEmail(mail);
 
   res.json({
-    message: "Verification email resent",
+    message: "Verification email sent",
   });
 };
 
