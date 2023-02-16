@@ -1,5 +1,6 @@
 const { User } = require("../../models");
 const { sendEmail, RequestError } = require("../../helpers");
+require("dotenv").config();
 
 const resendVerifyEmail = async (req, res) => {
   const { email } = req.body;

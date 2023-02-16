@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 const gravatar = require("gravatar");
 const { sendEmail, RequestError } = require("../../helpers");
 const { v4: uuid } = require("uuid");
+require("dotenv").config();
 
 const register = async (req, res) => {
   const { email, password, subscription } = req.body;
