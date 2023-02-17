@@ -1,15 +1,18 @@
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
 require("colors");
+require("dotenv").config();
 
 const app = require("./app");
 
-require("dotenv").config();
 const { DB_HOST, PORT = 3000 } = process.env;
 
 const connectDb = async () => {
   try {
-    const db = await mongoose.connect(DB_HOST);
+    const db = await mongoose.connect(DB_HOST, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
     console.log(
       `Database is connected: ${db.connection.name}, on port: ${db.connection.port}, on host: ${db.connection.host}`
         .bold.green.italic
