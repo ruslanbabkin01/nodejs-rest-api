@@ -1,7 +1,7 @@
 const { User } = require("../../models");
 const { Unauthorized, BadRequest } = require("http-errors");
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
+const { generateToken } = require("../../helpers");
 require("dotenv").config();
 
 const login = async (req, res) => {
@@ -21,10 +21,7 @@ const login = async (req, res) => {
     throw new BadRequest("Email not verify");
   }
 
-  const payload = {
-    id: user._id,
-  };
-  const token = jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: "24h" });
+  const token = generateToken(user._id);
 
   await User.findByIdAndUpdate(user._id, { token });
 
