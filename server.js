@@ -10,8 +10,9 @@ const { DB_HOST, PORT = 3000 } = process.env;
 const connectDb = async () => {
   try {
     const db = await mongoose.connect(DB_HOST, {
-      useNewUrlParser: true,
       useUnifiedTopology: true,
+      useNewUrlParser: true,
+      useCreateIndex: true,
     });
     console.log(
       `Database is connected: ${db.connection.name}, on port: ${db.connection.port}, on host: ${db.connection.host}`
