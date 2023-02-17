@@ -14,6 +14,7 @@
 const { Unauthorized } = require("http-errors");
 const jwt = require("jsonwebtoken");
 const { User } = require("../models");
+require("dotenv").config();
 
 const authMiddleware = async (req, res, next) => {
   const { authorization = "" } = req.headers;
