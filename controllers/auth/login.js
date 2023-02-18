@@ -21,7 +21,9 @@ const login = async (req, res) => {
     throw new BadRequest("Email not verify");
   }
 
-  const payload = { id: user._id };
+  const payload = {
+    id: user._id,
+  };
   const token = jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: "24h" });
 
   await User.findByIdAndUpdate(user._id, { token });
