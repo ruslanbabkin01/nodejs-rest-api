@@ -6,7 +6,7 @@ const { v4: uuid } = require("uuid");
 require("dotenv").config();
 
 const register = async (req, res) => {
-  const { email, password, subscription } = req.body;
+  const { email, password, subscription, name } = req.body;
   const user = await User.findOne({ email });
   if (user) {
     throw RequestError(409, "Email in use");
@@ -17,6 +17,7 @@ const register = async (req, res) => {
 
   const verificationToken = uuid();
   const newUser = await User.create({
+    name,
     subscription,
     email,
     password: hashPassword,
@@ -33,6 +34,7 @@ const register = async (req, res) => {
 
   res.status(201).json({
     user: {
+      name,
       email,
       subscription: newUser.subscription,
       verificationToken,

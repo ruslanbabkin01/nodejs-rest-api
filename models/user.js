@@ -11,6 +11,11 @@ const userSchema = new Schema(
       required: [true, "Set password for user"],
       minlenght: 6,
     },
+    name: {
+      type: String,
+      required: [true, "Set name for user"],
+      minlenght: 3,
+    },
     email: {
       type: String,
       required: [true, "Email is required"],
@@ -43,6 +48,7 @@ const userSchema = new Schema(
 );
 
 const registerJoiSchema = Joi.object({
+  name: Joi.string().min(3).required(),
   password: Joi.string().min(6).required(),
   email: Joi.string().pattern(emailRegex).required(),
   subscription: Joi.string(),
