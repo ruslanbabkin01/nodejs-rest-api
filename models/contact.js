@@ -15,7 +15,7 @@ const contactSchema = new Schema(
       type: String,
       unique: true,
     },
-    phone: {
+    number: {
       type: String,
       unique: true,
       match: isPhoneRegex,
@@ -42,7 +42,7 @@ const updateFavoriteSchema = Joi.object({
 const addJoiSchema = Joi.object({
   name: Joi.string().alphanum().required(),
   email: Joi.string().email().required(),
-  phone: Joi.string().regex(isPhoneRegex).required(),
+  number: Joi.string().regex(isPhoneRegex).required(),
   favorite: Joi.bool(),
 });
 
