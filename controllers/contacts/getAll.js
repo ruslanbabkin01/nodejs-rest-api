@@ -15,8 +15,8 @@ const getAll = async (req, res) => {
   }).populate("owner", "_id name email");
 
   res.json({
-    total: contacts.length,
     data: contacts,
+    total: contacts.length,
   });
 };
 
