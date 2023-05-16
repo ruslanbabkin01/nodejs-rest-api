@@ -18,7 +18,7 @@ const googleAuth = async (req, res) => {
   })
 
   res.redirect(
-    `${FRONT_URL}/contacts?accessToken=${accessToken}&refreshToken=${refreshToken}`
+    `${FRONT_URL}/?accessToken=${accessToken}&refreshToken=${refreshToken}`
   )
 }
 
