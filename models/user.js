@@ -27,7 +27,11 @@ const userSchema = new Schema(
       enum: ["starter", "pro", "business"],
       default: "starter",
     },
-    token: {
+    accessToken: {
+      type: String,
+      default: null,
+    },
+    refreshToken: {
       type: String,
       default: null,
     },
@@ -52,7 +56,7 @@ const registerJoiSchema = Joi.object({
   password: Joi.string().min(6).required(),
   email: Joi.string().pattern(emailRegex).required(),
   subscription: Joi.string(),
-  token: Joi.string(),
+  accessToken: Joi.string(),
 });
 
 const loginJoiSchema = Joi.object({
@@ -68,6 +72,10 @@ const verifyEmailJoiSchema = Joi.object({
   email: Joi.string().pattern(emailRegex).required(),
 });
 
+const refreshJoiSchema = Joi.object({
+  refreshToken: Joi.string().required(),
+});
+
 const User = model("user", userSchema);
 
 const userSchemas = {
@@ -75,6 +83,7 @@ const userSchemas = {
   loginJoiSchema,
   updateSubJoiSchema,
   verifyEmailJoiSchema,
+  refreshJoiSchema,
 };
 
 module.exports = {

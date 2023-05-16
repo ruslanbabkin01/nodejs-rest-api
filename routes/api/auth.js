@@ -1,34 +1,54 @@
 const express = require("express");
 
-const { auth: ctrl, users: ctrlUser } = require("../../controllers");
+const { auth: ctrlAuth, users: ctrlUser } = require("../../controllers");
 const {
   authMiddleware,
   validation,
   ctrlWrapper,
   upload,
+  passport,
 } = require("../../middlewares");
 const { userSchemas } = require("../../models");
 
 const router = express.Router();
 
+// google Authorization
+router.get(
+  "/google",
+  passport.authenticate("google", { scope: ["email", "profile"] })
+);
+// where google return
+router.get(
+  "/google/callback",
+  passport.authenticate("google", { session: false }),
+  ctrlAuth.googleAuth
+);
+
 router.post(
   "/register",
   validation(userSchemas.registerJoiSchema),
-  ctrlWrapper(ctrl.register)
+  ctrlWrapper(ctrlAuth.register)
 );
-// router.post("/signup")
+// or router.post("/signup")
 
 router.post(
   "/login",
   validation(userSchemas.loginJoiSchema),
-  ctrlWrapper(ctrl.login)
+  ctrlWrapper(ctrlAuth.login)
 );
-// router.post("/signin")
+// or router.post("/signin")
 
-router.post("/logout", authMiddleware, ctrlWrapper(ctrl.logout));
-// router.get("/signout")
+router.post("/logout", authMiddleware, ctrlWrapper(ctrlAuth.logout));
+// or router.get("/signout")
 
 router.get("/current", authMiddleware, ctrlWrapper(ctrlUser.getCurrent));
+
+// refresh router
+router.post(
+  "/refresh",
+  validation(userSchemas.refreshJoiSchema),
+  ctrlWrapper(ctrlAuth.refresh)
+);
 
 router.patch(
   "/",
@@ -40,8 +60,8 @@ router.patch(
 router.patch(
   "/avatars",
   authMiddleware,
-  upload.single("avatar"),
-  ctrlWrapper(ctrlUser.updateAvatar)
+  upload.single("avatarURL"),
+  ctrlWrapper(ctrlUser.updateAvatarCloudinary)
 );
 
 router.get("/verify/:verificationToken", ctrlWrapper(ctrlUser.verifyEmail));

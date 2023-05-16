@@ -11,34 +11,38 @@
 5. Якщо токен валідний - вилучити з нього id і знайти користувача в базі з таким id
 6. Якщо користувача з таким id знайшли в базі - його треба прикріпити до запиту (обєкт req).
 */
-const { Unauthorized } = require("http-errors");
-const jwt = require("jsonwebtoken");
-const { User } = require("../models");
-require("dotenv").config();
+const { Unauthorized } = require('http-errors')
+const jwt = require('jsonwebtoken')
+const { User } = require('../models')
+const createHttpError = require('http-errors')
+require('dotenv').config()
+
+const { ACCESS_SECRET_KEY } = process.env
 
 const authMiddleware = async (req, res, next) => {
-  const { authorization = "" } = req.headers;
-  const [bearer, token] = authorization.split(" ");
-  try {
-    if (bearer !== "Bearer") {
-      throw new Unauthorized("Not authorized");
-    }
+  const { authorization = '' } = req.headers
+  const [bearer, token] = authorization.split(' ')
 
-    const { id } = jwt.verify(token, process.env.SECRET_KEY);
-    const user = await User.findById(id);
-
-    if (!user || !user.token) {
-      throw new Unauthorized("Not authorized");
-    }
-
-    req.user = user;
-    next();
-  } catch (error) {
-    if (error.message === "Invalid sugnature") {
-      error.status = 401;
-    }
-    next(error);
+  if (bearer !== 'Bearer') {
+    throw new Unauthorized('Not authorized')
   }
-};
 
-module.exports = authMiddleware;
+  try {
+    const { id } = jwt.verify(token, ACCESS_SECRET_KEY)
+    const user = await User.findById(id)
+
+    if (!user || !user.accessToken) {
+      throw new Unauthorized('Not authorized')
+    }
+
+    req.user = user
+    next()
+  } catch (error) {
+    // if (error.message === 'Invalid signature') {
+    //   error.status = 401
+    // }
+    next(createHttpError(401))
+  }
+}
+
+module.exports = authMiddleware
