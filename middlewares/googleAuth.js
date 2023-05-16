@@ -33,7 +33,7 @@ const googleCallback = async (
     const hashPassword = await bcrypt.hash(v4(), 10)
     // create user avatar
     const avatarURL = gravatar.url(email)
-    // const verificationToken = v4()
+    const verificationToken = v4()
 
     const newUser = await User.create({
       name: displayName,
@@ -41,7 +41,7 @@ const googleCallback = async (
       email,
       password: hashPassword,
       avatarURL,
-      verificationToken: null,
+      verificationToken,
       verify: true,
     })
     done(null, newUser)
