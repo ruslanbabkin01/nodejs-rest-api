@@ -15,7 +15,7 @@ const googleAuth = async (req, res) => {
   await User.findByIdAndUpdate(id, { accessToken, refreshToken })
 
   res.redirect(
-    `${FRONT_URL}?accessToken=${accessToken}&refreshToken=${refreshToken}`
+    `${FRONT_URL}/?accessToken=${accessToken}&refreshToken=${refreshToken}`
   )
 }
 
