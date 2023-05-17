@@ -25,9 +25,6 @@ const login = async (req, res) => {
     id: user._id,
   }
 
-  // const accessToken = jwt.sign(payload, process.env.ACCESS_SECRET_KEY, {
-  //   expiresIn: '1m',
-  // })
   const accessToken = jwt.sign(payload, process.env.ACCESS_SECRET_KEY, {
     expiresIn: '1d',
   })
