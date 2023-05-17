@@ -28,7 +28,6 @@ const googleCallback = async (
     if (user) {
       return done(null, user) // req.user = user
     }
-
     // create password
     const hashPassword = await bcrypt.hash(v4(), 10)
     // create user avatar

@@ -15,9 +15,7 @@ const refresh = async (req, res) => {
     }
 
     const payload = { id }
-    // const accessToken = jwt.sign(payload, ACCESS_SECRET_KEY, {
-    //   expiresIn: '1m',
-    // })
+
     const accessToken = jwt.sign(payload, ACCESS_SECRET_KEY, {
       expiresIn: '1d',
     })

@@ -14,7 +14,6 @@
 const { Unauthorized } = require('http-errors')
 const jwt = require('jsonwebtoken')
 const { User } = require('../models')
-const createHttpError = require('http-errors')
 require('dotenv').config()
 
 const { ACCESS_SECRET_KEY } = process.env
@@ -38,10 +37,10 @@ const authMiddleware = async (req, res, next) => {
     req.user = user
     next()
   } catch (error) {
-    // if (error.message === 'Invalid signature') {
-    //   error.status = 401
-    // }
-    next(createHttpError(401))
+    if (error.message === 'Invalid signature') {
+      error.status = 401
+    }
+    next(error)
   }
 }
 
