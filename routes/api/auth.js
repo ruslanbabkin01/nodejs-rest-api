@@ -1,75 +1,75 @@
-const express = require("express");
+const express = require('express')
 
-const { auth: ctrlAuth, users: ctrlUser } = require("../../controllers");
+const { auth: ctrlAuth, users: ctrlUser } = require('../../controllers')
 const {
   authMiddleware,
   validation,
   ctrlWrapper,
   upload,
   passport,
-} = require("../../middlewares");
-const { userSchemas } = require("../../models");
+} = require('../../middlewares')
+const { userSchemas } = require('../../models')
 
-const router = express.Router();
+const router = express.Router()
 
 // google Authorization
 router.get(
-  "/google",
-  passport.authenticate("google", { scope: ["email", "profile"] })
-);
+  '/google',
+  passport.authenticate('google', { scope: ['email', 'profile'] })
+)
 // where google return
 router.get(
-  "/google/callback",
-  passport.authenticate("google", { session: false }),
-  ctrlAuth.googleAuth
-);
+  '/google/callback',
+  passport.authenticate('google', { session: false }),
+  ctrlWrapper(ctrlAuth.googleAuth)
+)
 
 router.post(
-  "/register",
+  '/register',
   validation(userSchemas.registerJoiSchema),
   ctrlWrapper(ctrlAuth.register)
-);
+)
 // or router.post("/signup")
 
 router.post(
-  "/login",
+  '/login',
   validation(userSchemas.loginJoiSchema),
   ctrlWrapper(ctrlAuth.login)
-);
+)
 // or router.post("/signin")
 
-router.post("/logout", authMiddleware, ctrlWrapper(ctrlAuth.logout));
+router.post('/logout', authMiddleware, ctrlWrapper(ctrlAuth.logout))
 // or router.get("/signout")
 
-router.get("/current", authMiddleware, ctrlWrapper(ctrlUser.getCurrent));
+router.get('/current', authMiddleware, ctrlWrapper(ctrlUser.getCurrent))
 
 // refresh router
 router.post(
-  "/refresh",
+  '/refresh',
   validation(userSchemas.refreshJoiSchema),
   ctrlWrapper(ctrlAuth.refresh)
-);
+)
 
 router.patch(
-  "/",
+  '/',
   authMiddleware,
   validation(userSchemas.updateSubJoiSchema),
   ctrlWrapper(ctrlUser.updateSubscription)
-);
+)
 
 router.patch(
-  "/avatars",
+  '/avatars',
   authMiddleware,
-  upload.single("avatarURL"),
+  upload.single('avatarURL'),
   ctrlWrapper(ctrlUser.updateAvatarCloudinary)
-);
+)
 
-router.get("/verify/:verificationToken", ctrlWrapper(ctrlUser.verifyEmail));
+router.get('/verify/:verificationToken', ctrlWrapper(ctrlUser.verifyEmail))
 
 router.post(
-  "/verify",
+  '/verify',
   validation(userSchemas.verifyEmailJoiSchema),
   ctrlWrapper(ctrlUser.resendVerifyEmail)
-);
+)
 
-module.exports = router;
+module.exports = router

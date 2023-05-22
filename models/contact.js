@@ -1,29 +1,36 @@
-const { Schema, model } = require("mongoose")
-const Joi = require("joi")
-const { handleSchemaValidationErrors } = require("../helpers")
+const { Schema, model } = require('mongoose')
+const Joi = require('joi')
+const { handleSchemaValidationErrors } = require('../helpers')
 
 const emailRegex =
   /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
 
-// const isPhoneRegex = /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/;
-const isPhoneRegex =
-  /^(\+)?((\d{2,3}) ?\d|\d)(([ -]?\d)|( ?(\d{2,3}) ?)){5,12}\d$/
+const phoneRegex = /^\+380\d{9}$/
+
+const nameRegex = /^[a-zA-Zа-яА-ЯіІїЇґҐ]+(?: [a-zA-Zа-яА-ЯіІїЇґҐ]+)*$/
 
 const contactSchema = new Schema(
   {
     name: {
       type: String,
-      required: [true, "Set name for contact"],
+      required: [true, 'Set name for contact'],
+      match: [nameRegex, 'Only letters can be accepted'],
+      minLength: 2,
+      maxLength: 16,
     },
     email: {
       type: String,
-      match: emailRegex,
+      match: [emailRegex, 'Please enter a valid email address'],
+      trim: true,
+      lowercase: true,
+      minLength: 5,
+      maxLength: 59,
     },
     number: {
       type: String,
       unique: true,
-      required: [true, "Set number for contact"],
-      match: isPhoneRegex,
+      required: [true, 'Set number for contact'],
+      match: [phoneRegex, 'Please enter a valid phone number'],
     },
     favorite: {
       type: Boolean,
@@ -31,14 +38,14 @@ const contactSchema = new Schema(
     },
     owner: {
       type: Schema.Types.ObjectId,
-      ref: "user",
+      ref: 'user',
       required: true,
     },
   },
   { versionKey: false, timestamps: true }
 )
 
-contactSchema.post("save", handleSchemaValidationErrors)
+contactSchema.post('save', handleSchemaValidationErrors)
 
 const updateFavoriteSchema = Joi.object({
   favorite: Joi.bool().required(),
@@ -47,7 +54,7 @@ const updateFavoriteSchema = Joi.object({
 const addJoiSchema = Joi.object({
   name: Joi.string().alphanum().required(),
   email: Joi.string().email().optional(),
-  number: Joi.string().regex(isPhoneRegex).required(),
+  number: Joi.string().regex(phoneRegex).required(),
   favorite: Joi.bool(),
 })
 
@@ -56,6 +63,6 @@ const schemas = {
   updateFavoriteSchema,
 }
 
-const Contact = model("contact", contactSchema)
+const Contact = model('contact', contactSchema)
 
 module.exports = { Contact, schemas }

@@ -23,12 +23,9 @@ const refresh = async (req, res) => {
       expiresIn: '7d',
     })
 
-    res.json({
-      accessToken,
-      refreshToken,
-    })
+    res.json({ accessToken, refreshToken })
   } catch (error) {
-    throw new Forbidden(error.message)
+    throw new Forbidden('Token invalid')
   }
 }
 
