@@ -1,6 +1,6 @@
 const passport = require('passport')
 const { Strategy } = require('passport-google-oauth2')
-const { User } = require('../models')
+const { User } = require('../schemas')
 const bcrypt = require('bcryptjs')
 require('dotenv').config()
 const gravatar = require('gravatar')

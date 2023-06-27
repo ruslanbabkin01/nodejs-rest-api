@@ -1,4 +1,4 @@
-const { User } = require('../../models')
+const { User } = require('../../schemas')
 const { Forbidden } = require('http-errors')
 const jwt = require('jsonwebtoken')
 require('dotenv').config()

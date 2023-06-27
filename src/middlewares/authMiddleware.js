@@ -13,7 +13,7 @@
 */
 const { Unauthorized } = require('http-errors')
 const jwt = require('jsonwebtoken')
-const { User } = require('../models')
+const { User } = require('../schemas')
 require('dotenv').config()
 
 const { ACCESS_SECRET_KEY } = process.env

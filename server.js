@@ -3,7 +3,7 @@ mongoose.set("strictQuery", false);
 require("colors");
 require("dotenv").config();
 
-const app = require("./app");
+const app = require("./src/app");
 
 const { DB_HOST, PORT = 3000 } = process.env;
 

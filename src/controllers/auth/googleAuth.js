@@ -1,6 +1,6 @@
 require('dotenv').config()
 const jwt = require('jsonwebtoken')
-const { User } = require('../../models')
+const { User } = require('../../schemas')
 
 const { FRONT_URL, ACCESS_SECRET_KEY, REFRESH_SECRET_KEY } = process.env
 

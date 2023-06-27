@@ -1,14 +1,13 @@
 const express = require('express')
-
-const { auth: ctrlAuth, users: ctrlUser } = require('../../controllers')
+const { auth: ctrlAuth, users: ctrlUser } = require('../controllers')
 const {
   authMiddleware,
   validation,
   ctrlWrapper,
   upload,
   passport,
-} = require('../../middlewares')
-const { userSchemas } = require('../../models')
+} = require('../middlewares')
+const { userSchemas } = require('../schemas')
 
 const router = express.Router()
 
