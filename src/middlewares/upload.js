@@ -1,20 +1,27 @@
-const multer = require("multer");
-const path = require("path");
+const multer = require('multer')
+const path = require('path')
 
-const tempDir = path.join(__dirname, "../", "tmp");
+const tempDir = path.join(__dirname, '../', 'tmp')
 
-// destination, filename determine where the file will be located after downloading:
-// destination is used to specify the directory where the files will be placed
-// filename is used to define what the file inside the directory will be named
+// fieldname	 - Field name specified in the form
+// originalname - 	Name of the file on the user's computer
+// destination - 	The folder to which the file has been saved
+// filename	 - The name of the file within the destination
+// path	- The full path to the uploaded file
+
 const multerConfig = multer.diskStorage({
   destination: tempDir,
   filename: (req, file, cb) => {
-    cb(null, file.originalname);
+    cb(null, file.originalname)
   },
-});
+  limits: {
+    // fileSize: 1,
+  },
+  // fileFilter
+})
 
 const upload = multer({
   storage: multerConfig,
-});
+})
 
-module.exports = upload;
+module.exports = upload

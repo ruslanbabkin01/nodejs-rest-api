@@ -2,7 +2,7 @@ const { User } = require('../../schemas')
 const path = require('path')
 const { resizeImage } = require('../../helpers')
 
-const avatarsDir = path.join(__dirname, '../../', 'public', 'avatars')
+const newDirectory = path.join(__dirname, '../../', 'public', 'avatars')
 
 const updateAvatar = async (req, res) => {
   const { path: tmpUpload, originalname } = req.file
@@ -11,7 +11,7 @@ const updateAvatar = async (req, res) => {
   // change name
   const newNameImg = `${_id}_${originalname}`
 
-  const avatarURL = await resizeImage(tmpUpload, avatarsDir, newNameImg)
+  const avatarURL = await resizeImage(tmpUpload, newDirectory, newNameImg)
 
   await User.findByIdAndUpdate(_id, { avatarURL })
 
