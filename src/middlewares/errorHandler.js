@@ -1,8 +1,5 @@
 module.exports = (err, req, res, next) => {
-  const statusCode = res.statusCode || 500
+  const { status = 500, message = 'Server error' } = err
 
-  res.status(statusCode).json({
-    code: statusCode,
-    error: err.stack,
-  })
+  res.status(status).json({ message, code: status })
 }

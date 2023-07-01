@@ -1,6 +1,6 @@
 const { User } = require('../../schemas')
 
-const logout = async (req, res) => {
+const logout = async (req, res, next) => {
   const { _id } = req.user
   await User.findByIdAndUpdate(_id, { accessToken: null, refreshToken: null })
 

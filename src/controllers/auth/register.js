@@ -1,15 +1,15 @@
+require('dotenv').config()
 const { User } = require('../../schemas')
 const bcrypt = require('bcryptjs')
 const gravatar = require('gravatar')
 const { sendEmail, RequestError } = require('../../helpers')
 const { v4: uuid } = require('uuid')
-require('dotenv').config()
 
-const register = async (req, res) => {
+const register = async (req, res, next) => {
   const { email, password, subscription, name } = req.body
   const user = await User.findOne({ email })
   if (user) {
-    throw RequestError(409, 'Email in use')
+    throw RequestError(409, 'User with this email already exists!')
   }
 
   const hashPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(10))
@@ -38,6 +38,7 @@ const register = async (req, res) => {
       email,
       subscription: newUser.subscription,
       verificationToken,
+      id: newUser._id,
     },
   })
 }

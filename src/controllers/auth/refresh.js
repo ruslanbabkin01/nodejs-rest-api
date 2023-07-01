@@ -5,7 +5,7 @@ require('dotenv').config()
 
 const { ACCESS_SECRET_KEY, REFRESH_SECRET_KEY } = process.env
 
-const refresh = async (req, res) => {
+const refresh = async (req, res, next) => {
   const { refreshToken: token } = req.body
   try {
     const { id } = jwt.verify(token, REFRESH_SECRET_KEY)

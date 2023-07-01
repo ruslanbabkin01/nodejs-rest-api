@@ -1,8 +1,6 @@
 const { Schema, model } = require('mongoose')
 const Joi = require('joi')
-
-const emailRegex =
-  /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+const { EMAIL_REGEX } = require('../constants/regexs')
 
 const userSchema = new Schema(
   {
@@ -26,7 +24,7 @@ const userSchema = new Schema(
       unique: true,
       trim: true,
       lowercase: true,
-      match: [emailRegex, 'Please enter a valid email address'],
+      match: [EMAIL_REGEX, 'Please enter a valid email address'],
       minLength: 5,
       maxLength: 59,
     },
@@ -62,14 +60,14 @@ const userSchema = new Schema(
 const registerJoiSchema = Joi.object({
   name: Joi.string().min(3).required(),
   password: Joi.string().min(6).required(),
-  email: Joi.string().pattern(emailRegex).required(),
+  email: Joi.string().pattern(EMAIL_REGEX).required(),
   subscription: Joi.string(),
   accessToken: Joi.string(),
 })
 
 const loginJoiSchema = Joi.object({
   password: Joi.string().min(6).required(),
-  email: Joi.string().pattern(emailRegex).required(),
+  email: Joi.string().pattern(EMAIL_REGEX).required(),
 })
 
 const updateSubJoiSchema = Joi.object({
@@ -77,7 +75,7 @@ const updateSubJoiSchema = Joi.object({
 })
 
 const verifyEmailJoiSchema = Joi.object({
-  email: Joi.string().pattern(emailRegex).required(),
+  email: Joi.string().pattern(EMAIL_REGEX).required(),
 })
 
 const refreshJoiSchema = Joi.object({

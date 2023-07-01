@@ -1,26 +1,20 @@
 const { Schema, model } = require('mongoose')
 const Joi = require('joi')
 const { handleSchemaValidationErrors } = require('../helpers')
-
-const emailRegex =
-  /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
-
-const phoneRegex = /^\+380\d{9}$/
-
-const nameRegex = /^[a-zA-Zа-яА-ЯіІїЇґҐ]+(?: [a-zA-Zа-яА-ЯіІїЇґҐ]+)*$/
+const { EMAIL_REGEX, PHONE_REGEX, NAME_REGEX } = require('../constants/regexs')
 
 const contactSchema = new Schema(
   {
     name: {
       type: String,
       required: [true, 'Set name for contact'],
-      match: [nameRegex, 'Only letters can be accepted'],
+      match: [NAME_REGEX, 'Only letters can be accepted'],
       minLength: 2,
       maxLength: 16,
     },
     email: {
       type: String,
-      match: [emailRegex, 'Please enter a valid email address'],
+      match: [EMAIL_REGEX, 'Please enter a valid email address'],
       trim: true,
       lowercase: true,
       minLength: 5,
@@ -30,7 +24,7 @@ const contactSchema = new Schema(
       type: String,
       unique: true,
       required: [true, 'Set number for contact'],
-      match: [phoneRegex, 'Please enter a valid phone number'],
+      match: [PHONE_REGEX, 'Please enter a valid phone number'],
     },
     favorite: {
       type: Boolean,
@@ -54,7 +48,7 @@ const updateFavoriteSchema = Joi.object({
 const addJoiSchema = Joi.object({
   name: Joi.string().alphanum().required(),
   email: Joi.string().email().optional(),
-  number: Joi.string().regex(phoneRegex).required(),
+  number: Joi.string().regex(PHONE_REGEX).required(),
   favorite: Joi.bool(),
 })
 
