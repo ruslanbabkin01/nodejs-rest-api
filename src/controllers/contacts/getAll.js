@@ -9,14 +9,15 @@ const getAll = async (req, res) => {
   if (typeof favorite !== 'undefined') {
     query.favorite = favorite
   }
+
   const contacts = await Contact.find(query, '-createdAt -updatedAt', {
     skip,
     limit: Number(limit),
-  }).populate('owner', '_id name email')
+  })
+  // .populate('owner', '_id name email subscription avatarURL')
 
   res.json({
-    data: contacts,
-    total: contacts.length,
+    contacts,
   })
 }
 

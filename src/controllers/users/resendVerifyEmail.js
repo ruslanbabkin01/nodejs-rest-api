@@ -1,6 +1,6 @@
+require('dotenv').config()
 const { User } = require('../../schemas')
 const { sendEmail, RequestError } = require('../../helpers')
-require('dotenv').config()
 
 const resendVerifyEmail = async (req, res) => {
   const { email } = req.body
@@ -8,7 +8,7 @@ const resendVerifyEmail = async (req, res) => {
   const user = await User.findOne({ email })
 
   if (!user) {
-    throw RequestError(404, 'missing required field email')
+    throw RequestError(404, 'Missing required field email')
   }
 
   if (user.verify) {

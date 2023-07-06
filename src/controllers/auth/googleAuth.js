@@ -4,7 +4,7 @@ const { User } = require('../../schemas')
 
 const { FRONT_URL, ACCESS_SECRET_KEY, REFRESH_SECRET_KEY } = process.env
 
-const googleAuth = async (req, res, next) => {
+const googleAuth = async (req, res) => {
   const { _id: id } = req.user
   const payload = { id }
 

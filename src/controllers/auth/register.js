@@ -5,7 +5,7 @@ const gravatar = require('gravatar')
 const { sendEmail, RequestError } = require('../../helpers')
 const { v4: uuid } = require('uuid')
 
-const register = async (req, res, next) => {
+const register = async (req, res) => {
   const { email, password, subscription, name } = req.body
   const user = await User.findOne({ email })
   if (user) {
@@ -17,12 +17,12 @@ const register = async (req, res, next) => {
 
   const verificationToken = uuid()
   const newUser = await User.create({
-    name,
-    subscription,
-    email,
     password: hashPassword,
-    avatarURL,
+    name,
+    email,
+    subscription,
     verificationToken,
+    avatarURL,
   })
 
   const mail = {
@@ -33,12 +33,13 @@ const register = async (req, res, next) => {
   await sendEmail(mail)
 
   res.status(201).json({
+    message: 'Verification email has been sent to your email',
     user: {
+      _id: newUser._id,
       name,
       email,
       subscription: newUser.subscription,
-      verificationToken,
-      id: newUser._id,
+      avatarURL,
     },
   })
 }

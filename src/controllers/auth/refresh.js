@@ -1,11 +1,11 @@
+require('dotenv').config()
 const { User } = require('../../schemas')
 const { Forbidden } = require('http-errors')
 const jwt = require('jsonwebtoken')
-require('dotenv').config()
 
 const { ACCESS_SECRET_KEY, REFRESH_SECRET_KEY } = process.env
 
-const refresh = async (req, res, next) => {
+const refresh = async (req, res) => {
   const { refreshToken: token } = req.body
   try {
     const { id } = jwt.verify(token, REFRESH_SECRET_KEY)

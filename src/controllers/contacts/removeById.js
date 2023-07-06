@@ -3,15 +3,15 @@ const { Contact } = require('../../schemas')
 
 const removeById = async (req, res) => {
   const { contactId } = req.params
-  const result = await Contact.findByIdAndRemove(contactId)
+  const contact = await Contact.findByIdAndRemove(contactId)
 
-  if (!result) {
+  if (!contact) {
     throw new NotFound(`Contact with id=${contactId} not found`)
   }
 
   res.json({
-    message: 'contact deleted',
-    data: result,
+    message: 'Contact successfully removed',
+    contact,
   })
 }
 

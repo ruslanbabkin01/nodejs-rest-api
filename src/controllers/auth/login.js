@@ -1,10 +1,10 @@
+require('dotenv').config()
 const { User } = require('../../schemas')
 const { Unauthorized, BadRequest } = require('http-errors')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-require('dotenv').config()
 
-const login = async (req, res, next) => {
+const login = async (req, res) => {
   const { email, password } = req.body
   const user = await User.findOne({ email })
 
@@ -18,7 +18,7 @@ const login = async (req, res, next) => {
   }
 
   if (!user.verify) {
-    throw new BadRequest('Email not verify')
+    throw new BadRequest('Email is not verify')
   }
 
   const payload = {
@@ -37,9 +37,11 @@ const login = async (req, res, next) => {
     accessToken,
     refreshToken,
     user: {
+      _id: user._id,
+      name: user.name,
       email,
       subscription: user.subscription,
-      name: user.name,
+      avatarURL: user.avatarURL,
     },
   })
 }

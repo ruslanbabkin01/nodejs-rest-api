@@ -1,3 +1,4 @@
+require('dotenv').config()
 const { User } = require('../../schemas')
 const { NotFound } = require('http-errors')
 
@@ -14,9 +15,9 @@ const verifyEmail = async (req, res) => {
     verificationToken: null,
   })
 
-  res.json({
-    message: 'Verification successful',
-  })
+  res.redirect(
+    `${process.env.FRONT_URL}/login?verificationToken=${verificationToken}`
+  )
 }
 
 module.exports = verifyEmail

@@ -3,13 +3,13 @@ const { Contact } = require('../../schemas')
 
 const getById = async (req, res) => {
   const { contactId } = req.params
-  const result = await Contact.findById(contactId)
+  const contact = await Contact.findById(contactId)
 
-  if (!result) {
+  if (!contact) {
     throw new NotFound(`Contact with id=${contactId} not found`)
   }
 
-  res.json(result)
+  res.json(contact)
 }
 
 module.exports = getById

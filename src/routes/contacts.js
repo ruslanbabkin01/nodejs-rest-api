@@ -1,5 +1,5 @@
 const express = require('express')
-const { contacts: ctrl } = require('../controllers')
+const { ctrlContacts } = require('../controllers')
 const {
   isValidId,
   authMiddleware,
@@ -10,31 +10,32 @@ const { schemas } = require('../schemas')
 
 const router = express.Router()
 
-router.get('/', authMiddleware, ctrlWrapper(ctrl.getAll))
+router.use(authMiddleware)
 
-router.get('/:contactId', isValidId, ctrlWrapper(ctrl.getById))
+router.get('/', ctrlWrapper(ctrlContacts.getAll))
+
+router.get('/:contactId', isValidId, ctrlWrapper(ctrlContacts.getById))
 
 router.post(
   '/',
-  authMiddleware,
   validation(schemas.addJoiSchema),
-  ctrlWrapper(ctrl.add)
+  ctrlWrapper(ctrlContacts.add)
 )
 
-router.delete('/:contactId', isValidId, ctrlWrapper(ctrl.removeById))
+router.delete('/:contactId', isValidId, ctrlWrapper(ctrlContacts.removeById))
 
 router.put(
   '/:contactId',
   validation(schemas.addJoiSchema),
   isValidId,
-  ctrlWrapper(ctrl.updateById)
+  ctrlWrapper(ctrlContacts.updateById)
 )
 
 router.patch(
-  '/:contactId/favorite',
+  '/:contactId/favorite/',
   validation(schemas.updateFavoriteSchema),
   isValidId,
-  ctrlWrapper(ctrl.updateStatus)
+  ctrlWrapper(ctrlContacts.updateStatus)
 )
 
 module.exports = router

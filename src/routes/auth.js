@@ -1,10 +1,9 @@
 const express = require('express')
-const { auth: ctrlAuth, users: ctrlUser } = require('../controllers')
+const { ctrlAuth } = require('../controllers')
 const {
   authMiddleware,
   validation,
   ctrlWrapper,
-  upload,
   passport,
 } = require('../middlewares')
 const { userSchemas } = require('../schemas')
@@ -40,35 +39,11 @@ router.post(
 router.post('/logout', authMiddleware, ctrlWrapper(ctrlAuth.logout))
 // or router.get("/signout")
 
-router.get('/current', authMiddleware, ctrlWrapper(ctrlUser.getCurrent))
-
 // refresh router
 router.post(
   '/refresh',
   validation(userSchemas.refreshJoiSchema),
   ctrlWrapper(ctrlAuth.refresh)
-)
-
-router.patch(
-  '/',
-  authMiddleware,
-  validation(userSchemas.updateSubJoiSchema),
-  ctrlWrapper(ctrlUser.updateSubscription)
-)
-
-router.patch(
-  '/avatars',
-  authMiddleware,
-  upload.single('avatarURL'),
-  ctrlWrapper(ctrlUser.updateAvatarCloudinary)
-)
-
-router.get('/verify/:verificationToken', ctrlWrapper(ctrlUser.verifyEmail))
-
-router.post(
-  '/verify',
-  validation(userSchemas.verifyEmailJoiSchema),
-  ctrlWrapper(ctrlUser.resendVerifyEmail)
 )
 
 module.exports = router

@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose')
 const Joi = require('joi')
-const { EMAIL_REGEX } = require('../constants/regexs')
+const { EMAIL_REGEX, NAME_REGEX } = require('../constants/regexs')
 
 const userSchema = new Schema(
   {
@@ -12,10 +12,7 @@ const userSchema = new Schema(
     name: {
       type: String,
       required: [true, 'Set name for user'],
-      match: [
-        /^[a-zA-Zа-яА-ЯіІїЇґҐ]+(?: [a-zA-Zа-яА-ЯіІїЇґҐ]+)*$/,
-        'Only letters can be accepted',
-      ],
+      match: [NAME_REGEX, 'Only letters can be accepted'],
       minLength: 3,
     },
     email: {
@@ -66,8 +63,8 @@ const registerJoiSchema = Joi.object({
 })
 
 const loginJoiSchema = Joi.object({
-  password: Joi.string().min(6).required(),
-  email: Joi.string().pattern(EMAIL_REGEX).required(),
+  password: Joi.string().trim().min(6).required(),
+  email: Joi.string().trim().pattern(EMAIL_REGEX).required(),
 })
 
 const updateSubJoiSchema = Joi.object({

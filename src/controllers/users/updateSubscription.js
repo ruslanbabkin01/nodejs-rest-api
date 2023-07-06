@@ -1,17 +1,20 @@
 const { User } = require('../../schemas')
 
 const updateSubscription = async (req, res) => {
-  const { id } = req.user
+  const { _id, name, email, subscription, avatarURL } = req.user
 
-  const user = await User.findByIdAndUpdate(id, req.body, {
+  const user = await User.findByIdAndUpdate(_id, req.body, {
     new: true,
   })
 
   res.json({
-    message: `subscription updated to: ${user.subscription}!`,
+    message: `Subscription updated to: ${user.subscription}!`,
     user: {
-      email: user.email,
-      subscription: user.subscription,
+      _id,
+      name,
+      email,
+      subscription,
+      avatarURL,
     },
   })
 }

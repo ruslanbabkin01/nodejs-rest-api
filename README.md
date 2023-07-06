@@ -1,8 +1,4 @@
-### :blue_heart::yellow_heart:GoIT: HTML-SCSS, JavaScript, ReactJS, Node.js
-
----
-
-#### :link:**CONTACTS-API**
+### :blue_heart::yellow_heart: Contacts API
 
 ---
 
